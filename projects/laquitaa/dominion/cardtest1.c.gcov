@@ -1,0 +1,110 @@
+        -:    0:Source:cardtest1.c
+        -:    0:Graph:cardtest1.gcno
+        -:    0:Data:cardtest1.gcda
+        -:    0:Runs:4
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include "dominion_helpers.h"
+        -:    3:#include <string.h>
+        -:    4:#include <stdio.h>
+        -:    5:#include <assert.h>
+        -:    6:#include "rngs.h"
+        -:    7:
+        4:    8:void assertTrue(int a, int b){
+        4:    9:	if(a==b)
+        -:   10:	{
+    #####:   11:		printf("TEST PASSED\n");
+        -:   12:	}
+        -:   13:	else{
+        4:   14:		printf("TEST FAILED\n");
+        -:   15:	}
+        4:   16:}
+        -:   17://Adventurer test
+        4:   18:int main (int argc, char** argv) {
+        -:   19:	struct gameState G, oG;
+        4:   20:    int k[10] = {great_hall, council_room, feast, gardens, mine
+        -:   21:               , remodel, smithy, village, baron, adventurer};
+        4:   22:    int choice1 = 0, choice2 = 0, choice3 = 0, bonus = 0, handPos = 0, seed =2, numbPlayers = 2, x = 1000, i, val, passFail = 1;
+        4:   23:	int plusCards = 1, plusActions=1;
+        4:   24:	int player = whoseTurn(&G);
+        -:   25:
+        -:   26:    //initialize game state
+        4:   27:    initializeGame(numbPlayers, k, seed, &G);
+        -:   28:
+        4:   29:    printf("\n *****TESTING Adventurer***** \n");
+        -:   30:	
+        -:   31:	//testing return value for proper usage
+        4:   32:    printf("\n TESTING RETURN VALUE:\n\n");
+     4004:   33:    for (i = 0; i < x; i++) {
+     4000:   34:        memcpy(&oG, &G, sizeof(struct gameState));
+     4000:   35:        val = cardEffect(adventurer, choice1, choice2, choice3, &oG, handPos, &bonus);
+     4000:   36:        if (val != 0) {
+    #####:   37:            passFail = 0;
+    #####:   38:            break;
+        -:   39:        }
+        -:   40:    }
+        4:   41:    printf("Return Value: %d, Expected: %d \n\n", val, 0);
+        -:   42:
+        -:   43:    //testing correct number of cards  and actionsadded
+        4:   44:    printf("\n TESTING CORRECT ACTION AND HAND COUNT\n\n");
+        4:   45:    for (i = 0; i < x; i++) {
+        4:   46:        memcpy(&oG, &G, sizeof(struct gameState));
+        4:   47:        cardEffect(adventurer, choice1, choice2, choice3, &oG, handPos, &bonus);
+        4:   48:        if (oG.handCount[player] != G.handCount[player]+plusCards-1){
+        4:   49:            passFail = 0;
+        4:   50:            break;
+        -:   51:        }
+    #####:   52:		if(oG.numActions != G.numActions){
+    #####:   53:			passFail = 0;
+    #####:   54:			break;
+        -:   55:		}
+        -:   56:    }
+        4:   57:	printf("Action Count: %d, Expected: %d \n\n", oG.numActions, G.numActions);
+        4:   58:    printf("Hand Count: %d, Expected: %d \n\n", oG.handCount[player], G.handCount[player]+plusCards-1);
+        -:   59:	
+        -:   60:	//testing treasure
+        -:   61:	int treasure, tC;
+     4004:   62:	for(i = 0; i<x; i++){
+     4000:   63:		memcpy(&oG,&G, sizeof(struct gameState));
+     4000:   64:		cardEffect(adventurer, choice1, choice2, choice3, &oG, handPos, &bonus);
+     4000:   65:		treasure = 0;
+     4000:   66:		int j = 0;
+        -:   67:		
+    28000:   68:		while(j<numHandCards(&G)){
+        -:   69:		//for (j = 0; j<numHandCards(&G; j++)
+    20000:   70:			if(handCard(j, &G) == copper){
+    16000:   71:				treasure ++;
+        -:   72:			}
+     4000:   73:			else if(handCard(j, &G)== silver){
+    #####:   74:				treasure = treasure +2;
+        -:   75:			}
+     4000:   76:			else if(handCard(j, &G) == gold){
+    #####:   77:				treasure = treasure+ 3;
+        -:   78:			}
+    20000:   79:			j++;
+        -:   80:		};
+        -:   81:		
+     4000:   82:		tC = 0;
+     4000:   83:		int k = 0;
+    40000:   84:		for (k = 0; k<numHandCards(&oG); k++){
+    36000:   85:			if (handCard(j, &oG) == copper) {
+    36000:   86:                tC++;
+    #####:   87:            } else if (handCard(j, &oG) == silver) {
+    #####:   88:                tC += 2;
+    #####:   89:            } else if (handCard(j, &oG) == gold) {
+    #####:   90:                tC += 3;
+        -:   91:            }
+        -:   92:		}
+     4000:   93:		if(treasure+2 > tC){
+    #####:   94:			passFail = 0;
+    #####:   95:			break;
+        -:   96:		}
+        -:   97:	}
+        4:   98:	printf("Treasure Count: %d, Expected Treasure Count: >= %d \n\n", tC, treasure+2);
+        -:   99:	
+        -:  100:    //check value of passFail for overall pass or fail
+        4:  101:	assertTrue(passFail, 1);
+        4:  102:	printf("\n\n *****Adventurer TEST COMPLETE*****\n\n");
+        -:  103:
+        4:  104:    return 0;
+        -:  105:};
