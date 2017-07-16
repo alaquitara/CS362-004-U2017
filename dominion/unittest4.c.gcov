@@ -1,0 +1,103 @@
+        -:    0:Source:unittest4.c
+        -:    0:Graph:unittest4.gcno
+        -:    0:Data:unittest4.gcda
+        -:    0:Runs:4
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include "dominion_helpers.h"
+        -:    3:#include <string.h>
+        -:    4:#include <stdio.h>
+        -:    5:#include "rngs.h"
+        -:    6://isGameOver() test
+        -:    7:
+        4:    8:void assertTrue(int a, int b){
+        4:    9:	if(a==b)
+        -:   10:	{
+        4:   11:		printf("TEST SUCCESSFULLY COMPLETED\n");
+        -:   12:	}
+        -:   13:	else{
+    #####:   14:		printf("TEST FAILED\n");
+        -:   15:	}
+        4:   16:}
+        -:   17:
+        4:   18:int main() {
+        -:   19:	struct gameState G, oG;
+        4:   20:    int k[10] = {adventurer, council_room, feast, gardens, mine
+        -:   21:               , smithy, great_hall, village, baron, steward};
+        4:   22:    int seed =3, numbPlayers = 2, x = 1000, i, val, passFail = 1;
+        4:   23:	initializeGame(numbPlayers, k, seed, &G);
+        -:   24:	
+        -:   25:	
+        4:   26:	printf("\n *****TESTING isGameOver ***** \n");
+        -:   27:	
+        -:   28:	//testing return value
+        4:   29:    printf("\n TESTING RETURN VALUE FOR GAME NOT OVER:\n\n");
+     4004:   30:    for (i = 0; i < x; i++) {
+     4000:   31:        memcpy(&oG, &G, sizeof(struct gameState));
+     4000:   32:        val = isGameOver(&oG);
+     4000:   33:        if (val != 0) {
+    #####:   34:            passFail = 0;
+    #####:   35:            break;
+        -:   36:        }
+        -:   37:    }
+        4:   38:	printf("Return Value: %d, Expected: %d \n\n", val, 0);
+        -:   39:	
+        4:   40:	printf("\n TESTING FOR 0 PROVINCE CARD GAME OVER:\n\n");
+     4004:   41:	for (i = 0; i < x; i++) {
+     4000:   42:        memcpy(&oG, &G, sizeof(struct gameState));
+     4000:   43:        oG.supplyCount[province]= 0;
+     4000:   44:		val = isGameOver(&oG);
+     4000:   45:        if (val == 0) {
+    #####:   46:			passFail = 0;
+    #####:   47:            break;
+        -:   48:		}
+        -:   49:	}
+        4:   50:	oG.supplyCount[province]= 3;
+        4:   51:	printf("Return Value: %d, Expected: %d \n\n", val, 1);
+        4:   52:	printf("\n TESTING FOR 1 SUPPLY COUNT 0:\n\n");
+        -:   53:	
+     4004:   54:	for (i = 0; i < x; i++) {
+     4000:   55:        memcpy(&oG, &G, sizeof(struct gameState));
+     4000:   56:        oG.supplyCount[1]= 0;
+     4000:   57:		val = isGameOver(&oG);
+     4000:   58:		if (val == 1) {
+    #####:   59:			passFail = 0;
+    #####:   60:			break;
+        -:   61:		}
+        -:   62:	}
+        4:   63:	printf("Return Value: %d, Expected: %d \n\n", val, 0);
+        -:   64:	
+        4:   65:	printf("\n TESTING FOR 2 SUPPLY COUNT 0:\n\n");
+     4004:   66:	for (i = 0; i < x; i++) {
+     4000:   67:        memcpy(&oG, &G, sizeof(struct gameState));
+     4000:   68:        oG.supplyCount[1]= 0;
+     4000:   69:		oG.supplyCount[2] = 0;
+     4000:   70:		val = isGameOver(&oG);
+     4000:   71:		if (val == 1) {
+    #####:   72:			passFail = 0;
+    #####:   73:			break;
+        -:   74:		}
+        -:   75:	}
+        4:   76:	printf("Return Value: %d, Expected: %d \n\n", val, 0);
+        -:   77:	
+        4:   78:	printf("\n TESTING FOR 3 SUPPLY COUNT 0:\n\n");
+        -:   79:	
+     4004:   80:	for (i = 0; i < x; i++) {
+     4000:   81:        memcpy(&oG, &G, sizeof(struct gameState));
+     4000:   82:        oG.supplyCount[0]= 0;
+     4000:   83:		oG.supplyCount[1] = 0;
+     4000:   84:		oG.supplyCount[2]= 0;
+     4000:   85:		val = isGameOver(&oG);
+     4000:   86:		if (val == 0) {
+    #####:   87:			passFail = 0;
+    #####:   88:			break;
+        -:   89:		}
+        -:   90:	}
+        4:   91:	printf("Return Value: %d, Expected: %d \n\n", val, 1);
+        -:   92:	
+        -:   93:	
+        4:   94:	assertTrue(passFail, 1);
+        -:   95:	
+        4:   96:	return 0;
+        -:   97:}
+        -:   98:
