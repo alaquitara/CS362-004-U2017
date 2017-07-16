@@ -1,0 +1,97 @@
+        -:    0:Source:cardtest4.c
+        -:    0:Graph:cardtest4.gcno
+        -:    0:Data:cardtest4.gcda
+        -:    0:Runs:4
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include "dominion_helpers.h"
+        -:    3:#include <string.h>
+        -:    4:#include <stdio.h>
+        -:    5:#include "rngs.h"
+        -:    6://Steward test
+        -:    7:
+        4:    8:void assertTrue(int a, int b){
+        4:    9:	if(a==b)
+        -:   10:	{
+    #####:   11:		printf("TEST PASSED\n");
+        -:   12:	}
+        -:   13:	else{
+        4:   14:		printf("TEST FAILED\n");
+        -:   15:	}
+        4:   16:}
+        -:   17:
+        4:   18:int main() {
+        -:   19:    struct gameState G, oG;
+        4:   20:    int k[10] = {adventurer, council_room, feast, gardens, mine
+        -:   21:               , smithy, great_hall, village, baron, steward};
+        4:   22:    int choice1 = 1, choice2 = 2, choice3 = 3, bonus = 0, handPos = 0, seed =2, numbPlayers = 2, x = 1000, i, val, passFail = 1;
+        4:   23:	int plusCards = 2, plusActions;
+        4:   24:	int player = whoseTurn(&G);
+        -:   25:
+        -:   26:    //initialize game state
+        4:   27:    initializeGame(numbPlayers, k, seed, &G);
+        -:   28:
+        4:   29:    printf("\n *****TESTING Steward***** \n");
+        4:   30:	memcpy(&oG, &G, sizeof(struct gameState));
+        -:   31:	//testing return value
+        4:   32:    printf("\n TESTING RETURN VALUE:\n\n");
+     4004:   33:    for (i = 0; i < x; i++) {
+     4000:   34:        memcpy(&oG, &G, sizeof(struct gameState));
+     4000:   35:        val = cardEffect(steward, choice1, choice2, choice3, &oG, handPos, &bonus);
+     4000:   36:        if (val != 0) {
+    #####:   37:            passFail = 0;
+    #####:   38:            break;
+        -:   39:        }
+        -:   40:    }
+        4:   41:    printf("Return Value: %d, Expected: %d \n\n", val, 0);
+        -:   42:	
+        -:   43:    //testing correct number of cards added
+        4:   44:    printf("\n TESTING CORRECT HAND COUNT AFTER DRAW 2 CARDS\n\n");
+        -:   45:    int newCount;
+     4004:   46:	for (i = 0; i < x; i++) {
+     4000:   47:        memcpy(&oG, &G, sizeof(struct gameState));
+     4000:   48:        cardEffect(steward, choice1, choice2, choice3, &oG, handPos, &bonus);
+     4000:   49:        if (oG.handCount[player] != G.handCount[player]+1){
+    #####:   50:            passFail = 0;
+    #####:   51:            break;
+        -:   52:        }
+        -:   53:    }
+        -:   54:	
+        4:   55:	printf("Hand Count: %d, Expected: %d \n\n", oG.handCount[player]-1, G.handCount[player]);
+        4:   56:	printf("\n TESTING CORRECT MONEY COUNT \n\n");
+        4:   57:	player = whoseTurn(&G);
+        -:   58:	
+        4:   59:	oG.coins = G.coins; 
+        -:   60:	
+        4:   61:	choice1 = 1;
+     4004:   62:	for (i = 0; i < x; i++) {
+     4000:   63:        memcpy(&oG, &G, sizeof(struct gameState));
+        -:   64:		//printf("Money Count: %d, Expected <: %d \n\n", oG.coins, G.coins);
+     4000:   65:        cardEffect(steward, choice1, choice2, choice3, &oG, handPos, &bonus);
+        -:   66:		//printf("Money Count: %d, Expected <: %d \n\n", oG.coins, G.coins);
+        -:   67:		
+     4000:   68:        if (oG.coins > G.coins +2){
+    #####:   69:            passFail = 0;
+    #####:   70:            break;
+        -:   71:        }
+        -:   72:    }
+        -:   73:	
+        4:   74:	printf("Money Count: %d, Expected: %d \n\n", oG.coins, G.coins+2);
+        -:   75:	
+        4:   76:	printf("\n TESTING DISCARD \n\n");
+        -:   77:	
+        4:   78:	for (i = 0; i < x; i++) {
+        4:   79:        memcpy(&oG, &G, sizeof(struct gameState));
+        4:   80:        cardEffect(steward, 2, choice2, choice3, &oG, handPos, &bonus);
+        4:   81:        if (oG.handCount[player] != G.handCount[player]-2){
+        4:   82:            passFail = 0;
+        4:   83:            break;
+        -:   84:        }
+        -:   85:    }
+        4:   86:	printf("Hand Count: %d, Expected: %d \n\n", oG.handCount[player], G.handCount[player]-3);
+        -:   87:    //check value of passFail for overall pass or fail
+        4:   88:	assertTrue(passFail, 1);
+        4:   89:	printf("\n\n *****STEWARD TEST COMPLETE*****\n\n");
+        -:   90:
+        4:   91:    return 0;
+        -:   92:};

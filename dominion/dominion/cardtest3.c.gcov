@@ -1,0 +1,85 @@
+        -:    0:Source:cardtest3.c
+        -:    0:Graph:cardtest3.gcno
+        -:    0:Data:cardtest3.gcda
+        -:    0:Runs:4
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include "dominion_helpers.h"
+        -:    3:#include <string.h>
+        -:    4:#include <stdio.h>
+        -:    5:#include <assert.h>
+        -:    6:#include "rngs.h"
+        -:    7:
+        4:    8:void assertTrue(int a, int b){
+        4:    9:	if(a==b)
+        -:   10:	{
+    #####:   11:		printf("TEST PASSED\n");
+        -:   12:	}
+        -:   13:	else{
+        4:   14:		printf("TEST FAILED\n");
+        -:   15:	}
+        4:   16:}
+        -:   17://greathall test
+        4:   18:int main (int argc, char** argv) {
+        -:   19:	struct gameState G, oG;
+        4:   20:    int k[10] = {adventurer, council_room, feast, gardens, mine
+        -:   21:               , remodel, smithy, village, baron, great_hall};
+        4:   22:    int choice1 = 0, choice2 = 0, choice3 = 0, bonus = 0, handPos = 0, seed =2, numbPlayers = 2, x = 1000, i, val, passFail = 1;
+        4:   23:	int plusCards = 1, plusActions=1;
+        4:   24:	int player = whoseTurn(&G);
+        -:   25:
+        -:   26:    //initialize game state
+        4:   27:    initializeGame(numbPlayers, k, seed, &G);
+        -:   28:
+        4:   29:    printf("\n *****TESTING Great Hall***** \n");
+        -:   30:	
+        4:   31:	printf("\n TESTING USAGE\n\n");
+        -:   32:	//test invalid input
+        4:   33:	int r = playGreat_hall(&G, -1, 4);
+        4:   34:	if (r == 0){
+        4:   35:		passFail = 1;
+        -:   36:	}
+        -:   37:
+        -:   38:	//test valid input
+        4:   39:	r = playGreat_hall( &G, 1, 4);
+        4:   40:	if(r==0){
+        4:   41:		passFail = 1;
+        4:   42:		if(passFail == 1){
+        4:   43:			printf("USAGE TEST PASSED\n\n");
+        -:   44:		}
+        -:   45:	}
+        -:   46:	
+        -:   47:	//testing return value
+        4:   48:    printf("\n TESTING RETURN VALUE:\n\n");
+     4004:   49:    for (i = 0; i < x; i++) {
+     4000:   50:        memcpy(&oG, &G, sizeof(struct gameState));
+     4000:   51:        val = cardEffect(great_hall, choice1, choice2, choice3, &oG, handPos, &bonus);
+     4000:   52:        if (val != 0) {
+    #####:   53:            passFail = 0;
+    #####:   54:            break;
+        -:   55:        }
+        -:   56:    }
+        4:   57:    printf("Return Value: %d, Expected: %d \n\n", val, 0);
+        -:   58:
+        -:   59:    //testing correct number of cards  and actionsadded
+        4:   60:    printf("\n TESTING CORRECT ACTION AND HAND COUNT\n\n");
+        4:   61:    for (i = 0; i < x; i++) {
+        4:   62:        memcpy(&oG, &G, sizeof(struct gameState));
+        4:   63:        cardEffect(great_hall, choice1, choice2, choice3, &oG, handPos, &bonus);
+        4:   64:        if (oG.handCount[player] != G.handCount[player]+plusCards-1){
+    #####:   65:            passFail = 0;
+    #####:   66:            break;
+        -:   67:        }
+        4:   68:		if(oG.numActions != G.numActions){
+        4:   69:			passFail = 0;
+        4:   70:			break;
+        -:   71:		}
+        -:   72:    }
+        4:   73:	printf("Action Count: %d, Expected: %d \n\n", oG.numActions, G.numActions);
+        4:   74:    printf("Hand Count: %d, Expected: %d \n\n", oG.handCount[player], G.handCount[player]+plusCards-1);
+        -:   75:    //check value of passFail for overall pass or fail
+        4:   76:	assertTrue(passFail, 1);
+        4:   77:	printf("\n\n *****Great Hall TEST COMPLETE*****\n\n");
+        -:   78:
+        4:   79:    return 0;
+        -:   80:};
