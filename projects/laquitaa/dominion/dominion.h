@@ -120,6 +120,16 @@ int endTurn(struct gameState *state);
 
 int isGameOver(struct gameState *state);
 
+int playAdventurer(int drawntreasure, struct gameState *state, int currentPlayer, int cardDrawn, int temphand[MAX_HAND], int z );
+
+int playSmithy(struct gameState *state, int currentPlayer, int handPos);
+
+int playGreat_hall(struct gameState *state, int currentPlayer, int handPos);
+
+int playSteward(int choice1, int choice2, int choice3, struct gameState *state, int currentPlayer, int handPos );
+
+int playMine(int choice1, int choice2,  struct gameState *state, int currentPlayer, int handPos);
+
 int scoreFor(int player, struct gameState *state);
 /* Negative here does not mean invalid; scores may be negative,
    -9999 means invalid input */
@@ -127,5 +137,7 @@ int scoreFor(int player, struct gameState *state);
 int getWinners(int players[MAX_PLAYERS], struct gameState *state);
 /* Set array position of each player who won (remember ties!) to
    1, others to 0 */
+   
+   
 
 #endif

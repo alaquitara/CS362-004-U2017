@@ -1,0 +1,66 @@
+        -:    0:Source:unittest3.c
+        -:    0:Graph:unittest3.gcno
+        -:    0:Data:unittest3.gcda
+        -:    0:Runs:4
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include "dominion_helpers.h"
+        -:    3:#include <string.h>
+        -:    4:#include <stdio.h>
+        -:    5:#include "rngs.h"
+        -:    6://shuffle() test
+        -:    7:
+        4:    8:void assertTrue(int a, int b){
+        4:    9:	if(a==b)
+        -:   10:	{
+        4:   11:		printf("TEST SUCCESSFULLY COMPLETED\n");
+        -:   12:	}
+        -:   13:	else{
+    #####:   14:		printf("TEST FAILED\n");
+        -:   15:	}
+        4:   16:}
+        -:   17:
+        4:   18:int main() {
+        -:   19:	struct gameState G, oG;
+        4:   20:    int k[10] = {adventurer, council_room, feast, gardens, mine
+        -:   21:               , smithy, great_hall, village, baron, steward};
+        4:   22:    int choice1 = 1, choice2 = 2, choice3 = 3, bonus = 0, handPos = 0, seed =3, counter=0, numbPlayers = 2, x = 1000, i, val, passFail = 1;
+        4:   23:	initializeGame(numbPlayers, k, seed, &G);
+        4:   24:	int player = whoseTurn(&G);
+        -:   25:	
+        4:   26:	printf("\n *****TESTING shuffle() ***** \n");
+        -:   27:	
+        -:   28:	//testing return value
+        4:   29:    printf("\n TESTING RETURN VALUE:\n\n");
+     4004:   30:    for (i = 0; i < x; i++) {
+     4000:   31:        memcpy(&oG, &G, sizeof(struct gameState));
+     4000:   32:        val = shuffle(player, &oG);
+     4000:   33:        if (val != 0) {
+    #####:   34:            passFail = 0;
+    #####:   35:            break;
+        -:   36:        }
+        -:   37:    }
+        4:   38:	printf("Return Value: %d, Expected: %d \n\n", val, 0);
+        -:   39:	//testing suffle functionality
+        4:   40:	printf("\n TESTING DECK IS SHUFFLED:\n\n");
+        4:   41:	int oGvalues[G.deckCount[player]];
+        4:   42:	int gValues[G.deckCount[player]];
+        -:   43:	
+        4:   44:	printf("VALUES BEFORE SHUFFLE:\n");
+       24:   45:	for(i=0; i<G.deckCount[player]; i++){
+       20:   46:		printf("%d\n",G.deck[player][i] );
+       20:   47:		gValues[i] = G.deck[player][i];
+        -:   48:	}
+        -:   49:	
+        4:   50:	printf("VALUES AFTER SHUFFLE:\n");
+        4:   51:	shuffle(player, &G);
+       24:   52:	for(i=0; i<G.deckCount[player]; i++){
+       20:   53:		printf("%d\n",G.deck[player][i] );
+       20:   54:		oGvalues[i] = G.deck[player][i];
+        -:   55:	}
+        -:   56:	if(gValues == oGvalues){
+        -:   57:		passFail = 0;
+        -:   58:	}
+        4:   59:	assertTrue(passFail, 1);
+        4:   60:	return 0;
+        -:   61:}
