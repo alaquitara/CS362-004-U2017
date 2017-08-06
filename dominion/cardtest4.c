@@ -39,7 +39,7 @@ int main() {
         }
     }
     printf("Return Value: %d, Expected: %d \n\n", val, 0);
-	
+	choice1 = 1;
     //testing correct number of cards added
     printf("\n TESTING CORRECT HAND COUNT AFTER DRAW 2 CARDS\n\n");
     int newCount;
@@ -58,7 +58,7 @@ int main() {
 	
 	oG.coins = G.coins; 
 	
-	choice1 = 1;
+	choice1 = 2;
 	for (i = 0; i < x; i++) {
         memcpy(&oG, &G, sizeof(struct gameState));
 		//printf("Money Count: %d, Expected <: %d \n\n", oG.coins, G.coins);
@@ -74,11 +74,11 @@ int main() {
 	printf("Money Count: %d, Expected: %d \n\n", oG.coins, G.coins+2);
 	
 	printf("\n TESTING DISCARD \n\n");
-	
+	choice1 = 3;
 	for (i = 0; i < x; i++) {
         memcpy(&oG, &G, sizeof(struct gameState));
-        cardEffect(steward, 2, choice2, choice3, &oG, handPos, &bonus);
-        if (oG.handCount[player] != G.handCount[player]-2){
+        cardEffect(steward, choice1, choice2, choice3, &oG, handPos, &bonus);
+        if (oG.handCount[player] != G.handCount[player]-3){
             passFail = 0;
             break;
         }

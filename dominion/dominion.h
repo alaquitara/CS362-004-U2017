@@ -10,6 +10,8 @@
 
 #define DEBUG 0
 
+
+
 /* http://dominion.diehrstraits.com has card texts */
 /* http://dominion.isotropic.org has other stuff */
 
@@ -85,8 +87,7 @@ int initializeGame(int numPlayers, int kingdomCards[10], int randomSeed,
 		   struct gameState *state);
 /* Responsible for initializing all supplies, and shuffling deck and
    drawing starting hands for all players.  Check that 10 cards selected
-   are in fact (different) kingdom cards, and that numPlayers is valid. 
-
+   are in fact (different) kingdom cards, and that numPlayers is valid.
 Cards not in game should initialize supply position to -1 */
 
 int shuffle(int player, struct gameState *state);
@@ -120,16 +121,6 @@ int endTurn(struct gameState *state);
 
 int isGameOver(struct gameState *state);
 
-int playAdventurer(int drawntreasure, struct gameState *state, int currentPlayer, int cardDrawn, int temphand[MAX_HAND], int z );
-
-int playSmithy(struct gameState *state, int currentPlayer, int handPos);
-
-int playGreat_hall(struct gameState *state, int currentPlayer, int handPos);
-
-int playSteward(int choice1, int choice2, int choice3, struct gameState *state, int currentPlayer, int handPos );
-
-int playMine(int choice1, int choice2,  struct gameState *state, int currentPlayer, int handPos);
-
 int scoreFor(int player, struct gameState *state);
 /* Negative here does not mean invalid; scores may be negative,
    -9999 means invalid input */
@@ -137,7 +128,12 @@ int scoreFor(int player, struct gameState *state);
 int getWinners(int players[MAX_PLAYERS], struct gameState *state);
 /* Set array position of each player who won (remember ties!) to
    1, others to 0 */
-   
-   
+
+int playAdventurer(struct gameState *state);
+int playSmithy(struct gameState *state, int handPos);
+int playVillage(struct gameState *state, int handPos);
+int playFeast(struct gameState *state, int choice1);
+int playCouncil_Room(struct gameState *state, int handPos);
+
 
 #endif

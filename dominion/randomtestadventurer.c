@@ -107,7 +107,7 @@ int main(){
 		sw = 0;
 	}
 	
-	//printf("pass#:  %d, fail#: %d\n", pass, fail);
+	
 	if(fail == 0){
 		printf("Test Passed\n");
 

@@ -30,13 +30,13 @@ int main() {
 	
 	printf("\n TESTING USAGE\n\n");
 	//test invalid input
-	int r = playSmithy(&G, -1, 4);
+	int r = newSmithy( 1, &G, 4);
 	if (r == 0){
 		passFail = 1;
 	}
 
 	//test valid input
-	r = playSmithy( &G, 1, 4);
+	r = newSmithy( 1, &G, 4);
 	if(r==0){
 		passFail = 1;
 		if(passFail == 1){

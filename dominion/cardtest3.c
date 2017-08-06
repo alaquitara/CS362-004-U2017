@@ -30,13 +30,13 @@ int main (int argc, char** argv) {
 	
 	printf("\n TESTING USAGE\n\n");
 	//test invalid input
-	int r = playGreat_hall(&G, -1, 4);
+	int r = cardEffect(great_hall, choice1, choice2, choice3, &oG, -1, &bonus);
 	if (r == 0){
 		passFail = 1;
 	}
 
 	//test valid input
-	r = playGreat_hall( &G, 1, 4);
+	r =cardEffect(great_hall, choice1, choice2, choice3, &oG, handPos, &bonus);
 	if(r==0){
 		passFail = 1;
 		if(passFail == 1){

@@ -42,20 +42,23 @@ int main(){
         int r = cardEffect(steward, choice1, choice2, choice3, &oG, handPos, &bonus);
         
 		//testing for correct number of cards added
-		if ((choice1 == 1) && (oG.handCount[player] != G.handCount[player]+1)){
+		if ((choice1 == 1) && (oG.handCount[player] != G.handCount[player])){
             fail++;
 			sw= 1;
+			printf("Hand Count: %d, Expected: %d \n\n", oG.handCount[player], G.handCount[player]);
         }
-		//testing for correct number of actions
-		if((choice1 == 2) && (oG.numActions != G.numActions)){
+		//testing for correct number of coins
+		if ((choice1 == 2) && (oG.coins > G.coins +2)){
 			fail++;
 			sw = 2;
+			printf("Money Count: %d, Expected <: %d \n\n", oG.coins, G.coins);
 		}
 		
 		//testing discard
-		if((choice1 > 2) && (oG.handCount[player] != G.handCount[player]-2)){
+		if((choice1 == 3) && (oG.handCount[player] != G.handCount[player])){
 			fail++;
 			sw=3;
+			printf("Hand Count: %d, Expected: %d \n\n", oG.handCount[player], G.handCount[player]);
 		}
 		//testing return value
 		if(r == 0){
@@ -70,7 +73,7 @@ int main(){
 				printf("Test for number of cards added failed\n");
 				break;
 			case 2:
-				printf("Test for number of actions failed\n");
+				printf("Test for number of coins failed\n");
 				break;
 			case 3:
 				printf("Test for number of cards discarded failed\n");
