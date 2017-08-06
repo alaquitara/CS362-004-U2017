@@ -1,0 +1,913 @@
+
+ *****TESTING handCard ***** 
+
+ TESTING RETURN VALUE:
+
+Return Value: 1, Expected: 1 
+
+TESTING CARD VALUES
+
+Original values     Copy Vaues
+     4               4
+     4               4
+     4               4
+     1               1
+     4               4
+TEST PASSED
+hand count 5
+
+ *****TESTING numHandCard ***** 
+
+ TESTING RETURN VALUE:
+
+Return Value: 5, Expected: 5 
+
+ TESTING AFTER ADDING CARD:
+
+Return Value: 6, Expected: 6 
+
+ TESTING AFTER REMOVING CARD:
+
+Return Value: 4, Expected: 4 
+
+TEST SUCCESSFULLY COMPLETED
+
+ *****TESTING shuffle() ***** 
+
+ TESTING RETURN VALUE:
+
+Return Value: 0, Expected: 0 
+
+
+ TESTING DECK IS SHUFFLED:
+
+VALUES BEFORE SHUFFLE:
+1
+4
+4
+4
+4
+VALUES AFTER SHUFFLE:
+4
+4
+4
+4
+1
+TEST SUCCESSFULLY COMPLETED
+
+ *****TESTING isGameOver ***** 
+
+ TESTING RETURN VALUE FOR GAME NOT OVER:
+
+Return Value: 0, Expected: 0 
+
+
+ TESTING FOR 0 PROVINCE CARD GAME OVER:
+
+Return Value: 1, Expected: 1 
+
+
+ TESTING FOR 1 SUPPLY COUNT 0:
+
+Return Value: 0, Expected: 0 
+
+
+ TESTING FOR 2 SUPPLY COUNT 0:
+
+Return Value: 0, Expected: 0 
+
+
+ TESTING FOR 3 SUPPLY COUNT 0:
+
+Return Value: 1, Expected: 1 
+
+TEST SUCCESSFULLY COMPLETED
+
+ *****TESTING Adventurer***** 
+
+ TESTING RETURN VALUE:
+
+Return Value: 0, Expected: 0 
+
+
+ TESTING CORRECT ACTION AND HAND COUNT
+
+Action Count: 1, Expected: 1 
+
+Hand Count: 7, Expected: > 5 
+
+Treasure Count: 7, Expected Treasure Count: >= 6 
+
+TEST PASSED
+
+
+ *****Adventurer TEST COMPLETE*****
+
+
+ *****TESTING SMITHY***** 
+
+ TESTING USAGE
+
+
+ TESTING RETURN VALUE:
+
+Return Value: 0, Expected: 0 
+
+
+ TESTING CORRECT HAND COUNT
+
+Hand Count: 8, Expected: 7 
+
+TEST FAILED
+
+
+ *****SMITHY TEST COMPLETE*****
+
+
+ *****TESTING Great Hall***** 
+
+ TESTING USAGE
+
+USAGE TEST PASSED
+
+
+ TESTING RETURN VALUE:
+
+Return Value: 0, Expected: 0 
+
+
+ TESTING CORRECT ACTION AND HAND COUNT
+
+Action Count: 2, Expected: 2 
+
+Hand Count: 5, Expected: 5 
+
+TEST FAILED
+
+
+ *****Great Hall TEST COMPLETE*****
+
+
+ *****TESTING Steward***** 
+
+ TESTING RETURN VALUE:
+
+Return Value: 0, Expected: 0 
+
+
+ TESTING CORRECT HAND COUNT AFTER DRAW 2 CARDS
+
+Hand Count: 5, Expected: 5 
+
+
+ TESTING CORRECT MONEY COUNT 
+
+Money Count: 4, Expected: 6 
+
+
+ TESTING DISCARD 
+
+Hand Count: 4, Expected: 2 
+
+TEST FAILED
+
+
+ *****STEWARD TEST COMPLETE*****
+
+File 'unittest1.c'
+Lines executed:90.91% of 44
+Creating 'unittest1.c.gcov'
+
+        -:    0:Source:unittest1.c
+        -:    0:Graph:unittest1.gcno
+        -:    0:Data:unittest1.gcda
+        -:    0:Runs:6
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include "dominion_helpers.h"
+        -:    3:#include <string.h>
+        -:    4:#include <stdio.h>
+        -:    5:#include "rngs.h"
+        -:    6://handCard() test
+        -:    7:
+        6:    8:void assertTrue(int a, int b){
+        6:    9:	if(a==b)
+        -:   10:	{
+        6:   11:		printf("TEST PASSED\n");
+        -:   12:	}
+        -:   13:	else{
+    #####:   14:		printf("TEST FAILED\n");
+        -:   15:	}
+        6:   16:}
+        -:   17:
+        6:   18:int main() {
+        -:   19:	struct gameState G, oG;
+        6:   20:    int k[10] = {adventurer, council_room, feast, gardens, mine
+        -:   21:               , smithy, great_hall, village, baron, steward};
+        6:   22:    int choice1 = 1, choice2 = 2, choice3 = 3, bonus = 0, handPos = 0, seed =2, counter=0, numbPlayers = 2, x = 1000, i, val, passFail = 1;
+        6:   23:	initializeGame(numbPlayers, k, seed, &G);
+        6:   24:	int player = whoseTurn(&G);
+        -:   25:	
+        6:   26:	printf("\n *****TESTING handCard ***** \n");
+        -:   27:	
+        -:   28:	//testing return value
+        6:   29:    printf("\n TESTING RETURN VALUE:\n\n");
+     6006:   30:    for (i = 0; i < x; i++) {
+     6000:   31:        memcpy(&oG, &G, sizeof(struct gameState));
+     6000:   32:        val = handCard(counter, &oG);
+     6000:   33:		player = whoseTurn(&oG);
+     6000:   34:        if (val != G.hand[player][counter]) {
+    #####:   35:            passFail = 0;
+    #####:   36:            break;
+        -:   37:        }
+     6000:   38:		counter++;
+     6000:   39:		if(counter > oG.handCount[0]){
+      996:   40:			counter=0;
+        -:   41:		}
+        -:   42:    }
+        6:   43:	printf("Return Value: %d, Expected: %d \n\n", val, 1);
+        -:   44:	
+        6:   45:	counter = 0;
+        6:   46:	printf("TESTING CARD VALUES\n\n");
+     6006:   47:	for (i = 0; i < x; i++) {
+        -:   48:		
+     6000:   49:        memcpy(&oG, &G, sizeof(struct gameState));
+        -:   50:        //oG.whoseTurn = 0;
+     6000:   51:		player = whoseTurn(&oG);
+     6000:   52:        handCard(counter, &oG);
+     6000:   53:        counter++;
+     6000:   54:        if (counter > oG.handCount[0]) {
+      996:   55:            counter = 0;
+        -:   56:        }
+        -:   57:    }
+        6:   58:    x = G.handCount[0];
+        6:   59:	int gValues[x], oGvalues[x];
+       36:   60:    for (i = 0; i < x; i++ ) {
+       30:   61:		oGvalues[i] = oG.hand[player][i];
+       30:   62:		gValues[i] = G.hand[player][i];
+        -:   63:	}
+        6:   64:	printf("Original values     Copy Vaues\n");
+       36:   65:	for(i = 0; i < x; i++ ){
+       30:   66:		printf("     %d               %d\n",gValues[i], oGvalues[i]);
+       30:   67:		if(gValues[i] != oGvalues[i]){
+    #####:   68:			passFail = 0;
+        -:   69:		}
+        -:   70:	}
+        -:   71:	
+        6:   72:	assertTrue(passFail, 1);
+        6:   73:	return 0;
+        -:   74:}
+File 'unittest2.c'
+Lines executed:84.78% of 46
+Creating 'unittest2.c.gcov'
+
+        -:    0:Source:unittest2.c
+        -:    0:Graph:unittest2.gcno
+        -:    0:Data:unittest2.gcda
+        -:    0:Runs:5
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include "dominion_helpers.h"
+        -:    3:#include <string.h>
+        -:    4:#include <stdio.h>
+        -:    5:#include "rngs.h"
+        -:    6://numHandCards() test
+        -:    7:
+        5:    8:void assertTrue(int a, int b){
+        5:    9:	if(a==b)
+        -:   10:	{
+        5:   11:		printf("TEST SUCCESSFULLY COMPLETED\n");
+        -:   12:	}
+        -:   13:	else{
+    #####:   14:		printf("TEST FAILED\n");
+        -:   15:	}
+        5:   16:}
+        -:   17:
+        5:   18:int main() {
+        -:   19:	struct gameState G, oG;
+        5:   20:    int k[10] = {adventurer, council_room, feast, gardens, mine
+        -:   21:               , smithy, great_hall, village, baron, steward};
+        5:   22:    int choice1 = 1, choice2 = 2, choice3 = 3, bonus = 0, handPos = 0, seed =2, counter=0, numbPlayers = 2, x = 1000, i, val, passFail = 1;
+        5:   23:	initializeGame(numbPlayers, k, seed, &G);
+        5:   24:	int player = whoseTurn(&G);
+        5:   25:	int correctNumb = G.handCount[player];
+        5:   26:	printf("hand count %d\n", correctNumb);
+        -:   27:	
+        5:   28:	printf("\n *****TESTING numHandCard ***** \n");
+        -:   29:	
+        -:   30:	
+        -:   31:	//testing return value
+        5:   32:    printf("\n TESTING RETURN VALUE:\n\n");
+     5005:   33:    for (i = 0; i < x; i++) {
+     5000:   34:        memcpy(&oG, &G, sizeof(struct gameState));
+     5000:   35:        val = numHandCards(&oG);
+     5000:   36:		player = whoseTurn(&oG);
+     5000:   37:        if (val != correctNumb) {
+    #####:   38:            passFail = 0;
+    #####:   39:            break;
+        -:   40:        }
+        -:   41:    }
+        5:   42:	printf("Return Value: %d, Expected: %d \n\n", val, correctNumb);
+        -:   43:	//testing after adding
+        5:   44:	printf(" TESTING AFTER ADDING CARD:\n\n");
+        5:   45:	correctNumb = G.handCount[player]+1;
+     5005:   46:	for (i = 0; i < x; i++) {
+     5000:   47:        memcpy(&oG, &G, sizeof(struct gameState));
+     5000:   48:        drawCard(player, &oG);
+     5000:   49:		val = numHandCards(&oG);
+     5000:   50:		player = whoseTurn(&oG);
+     5000:   51:        if (val != correctNumb) {
+    #####:   52:            passFail = 0;
+    #####:   53:            break;
+        -:   54:        }
+        -:   55:    }
+        5:   56:	printf("Return Value: %d, Expected: %d \n\n", val, correctNumb);
+        -:   57:	
+        -:   58:	//testing after removing
+        5:   59:	printf(" TESTING AFTER REMOVING CARD:\n\n");
+        5:   60:	correctNumb = G.handCount[player]-1;
+     5005:   61:	for (i = 0; i < x; i++) {
+     5000:   62:        memcpy(&oG, &G, sizeof(struct gameState));
+     5000:   63:        discardCard(1,player, &oG,0);
+     5000:   64:		val = numHandCards(&oG);
+     5000:   65:		player = whoseTurn(&oG);
+     5000:   66:        if (val != correctNumb) {
+    #####:   67:            passFail = 0;
+    #####:   68:            break;
+        -:   69:        }
+        -:   70:    }
+        5:   71:	printf("Return Value: %d, Expected: %d \n\n", val, correctNumb);
+        5:   72:	assertTrue(passFail, 1);
+        5:   73:	return 0;
+        -:   74:}
+File 'unittest3.c'
+Lines executed:90.91% of 33
+Creating 'unittest3.c.gcov'
+
+        -:    0:Source:unittest3.c
+        -:    0:Graph:unittest3.gcno
+        -:    0:Data:unittest3.gcda
+        -:    0:Runs:5
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include "dominion_helpers.h"
+        -:    3:#include <string.h>
+        -:    4:#include <stdio.h>
+        -:    5:#include "rngs.h"
+        -:    6://shuffle() test
+        -:    7:
+        5:    8:void assertTrue(int a, int b){
+        5:    9:	if(a==b)
+        -:   10:	{
+        5:   11:		printf("TEST SUCCESSFULLY COMPLETED\n");
+        -:   12:	}
+        -:   13:	else{
+    #####:   14:		printf("TEST FAILED\n");
+        -:   15:	}
+        5:   16:}
+        -:   17:
+        5:   18:int main() {
+        -:   19:	struct gameState G, oG;
+        5:   20:    int k[10] = {adventurer, council_room, feast, gardens, mine
+        -:   21:               , smithy, great_hall, village, baron, steward};
+        5:   22:    int choice1 = 1, choice2 = 2, choice3 = 3, bonus = 0, handPos = 0, seed =3, counter=0, numbPlayers = 2, x = 1000, i, val, passFail = 1;
+        5:   23:	initializeGame(numbPlayers, k, seed, &G);
+        5:   24:	int player = whoseTurn(&G);
+        -:   25:	
+        5:   26:	printf("\n *****TESTING shuffle() ***** \n");
+        -:   27:	
+        -:   28:	//testing return value
+        5:   29:    printf("\n TESTING RETURN VALUE:\n\n");
+     5005:   30:    for (i = 0; i < x; i++) {
+     5000:   31:        memcpy(&oG, &G, sizeof(struct gameState));
+     5000:   32:        val = shuffle(player, &oG);
+     5000:   33:        if (val != 0) {
+    #####:   34:            passFail = 0;
+    #####:   35:            break;
+        -:   36:        }
+        -:   37:    }
+        5:   38:	printf("Return Value: %d, Expected: %d \n\n", val, 0);
+        -:   39:	//testing suffle functionality
+        5:   40:	printf("\n TESTING DECK IS SHUFFLED:\n\n");
+        5:   41:	int oGvalues[G.deckCount[player]];
+        5:   42:	int gValues[G.deckCount[player]];
+        -:   43:	
+        5:   44:	printf("VALUES BEFORE SHUFFLE:\n");
+       30:   45:	for(i=0; i<G.deckCount[player]; i++){
+       25:   46:		printf("%d\n",G.deck[player][i] );
+       25:   47:		gValues[i] = G.deck[player][i];
+        -:   48:	}
+        -:   49:	
+        5:   50:	printf("VALUES AFTER SHUFFLE:\n");
+        5:   51:	shuffle(player, &G);
+       30:   52:	for(i=0; i<G.deckCount[player]; i++){
+       25:   53:		printf("%d\n",G.deck[player][i] );
+       25:   54:		oGvalues[i] = G.deck[player][i];
+        -:   55:	}
+        -:   56:	if(gValues == oGvalues){
+        -:   57:		passFail = 0;
+        -:   58:	}
+        5:   59:	assertTrue(passFail, 1);
+        5:   60:	return 0;
+        -:   61:}
+File 'unittest4.c'
+Lines executed:81.67% of 60
+Creating 'unittest4.c.gcov'
+
+        -:    0:Source:unittest4.c
+        -:    0:Graph:unittest4.gcno
+        -:    0:Data:unittest4.gcda
+        -:    0:Runs:5
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include "dominion_helpers.h"
+        -:    3:#include <string.h>
+        -:    4:#include <stdio.h>
+        -:    5:#include "rngs.h"
+        -:    6://isGameOver() test
+        -:    7:
+        5:    8:void assertTrue(int a, int b){
+        5:    9:	if(a==b)
+        -:   10:	{
+        5:   11:		printf("TEST SUCCESSFULLY COMPLETED\n");
+        -:   12:	}
+        -:   13:	else{
+    #####:   14:		printf("TEST FAILED\n");
+        -:   15:	}
+        5:   16:}
+        -:   17:
+        5:   18:int main() {
+        -:   19:	struct gameState G, oG;
+        5:   20:    int k[10] = {adventurer, council_room, feast, gardens, mine
+        -:   21:               , smithy, great_hall, village, baron, steward};
+        5:   22:    int seed =3, numbPlayers = 2, x = 1000, i, val, passFail = 1;
+        5:   23:	initializeGame(numbPlayers, k, seed, &G);
+        -:   24:	
+        -:   25:	
+        5:   26:	printf("\n *****TESTING isGameOver ***** \n");
+        -:   27:	
+        -:   28:	//testing return value
+        5:   29:    printf("\n TESTING RETURN VALUE FOR GAME NOT OVER:\n\n");
+     5005:   30:    for (i = 0; i < x; i++) {
+     5000:   31:        memcpy(&oG, &G, sizeof(struct gameState));
+     5000:   32:        val = isGameOver(&oG);
+     5000:   33:        if (val != 0) {
+    #####:   34:            passFail = 0;
+    #####:   35:            break;
+        -:   36:        }
+        -:   37:    }
+        5:   38:	printf("Return Value: %d, Expected: %d \n\n", val, 0);
+        -:   39:	
+        5:   40:	printf("\n TESTING FOR 0 PROVINCE CARD GAME OVER:\n\n");
+     5005:   41:	for (i = 0; i < x; i++) {
+     5000:   42:        memcpy(&oG, &G, sizeof(struct gameState));
+     5000:   43:        oG.supplyCount[province]= 0;
+     5000:   44:		val = isGameOver(&oG);
+     5000:   45:        if (val == 0) {
+    #####:   46:			passFail = 0;
+    #####:   47:            break;
+        -:   48:		}
+        -:   49:	}
+        5:   50:	oG.supplyCount[province]= 3;
+        5:   51:	printf("Return Value: %d, Expected: %d \n\n", val, 1);
+        5:   52:	printf("\n TESTING FOR 1 SUPPLY COUNT 0:\n\n");
+        -:   53:	
+     5005:   54:	for (i = 0; i < x; i++) {
+     5000:   55:        memcpy(&oG, &G, sizeof(struct gameState));
+     5000:   56:        oG.supplyCount[1]= 0;
+     5000:   57:		val = isGameOver(&oG);
+     5000:   58:		if (val == 1) {
+    #####:   59:			passFail = 0;
+    #####:   60:			break;
+        -:   61:		}
+        -:   62:	}
+        5:   63:	printf("Return Value: %d, Expected: %d \n\n", val, 0);
+        -:   64:	
+        5:   65:	printf("\n TESTING FOR 2 SUPPLY COUNT 0:\n\n");
+     5005:   66:	for (i = 0; i < x; i++) {
+     5000:   67:        memcpy(&oG, &G, sizeof(struct gameState));
+     5000:   68:        oG.supplyCount[1]= 0;
+     5000:   69:		oG.supplyCount[2] = 0;
+     5000:   70:		val = isGameOver(&oG);
+     5000:   71:		if (val == 1) {
+    #####:   72:			passFail = 0;
+    #####:   73:			break;
+        -:   74:		}
+        -:   75:	}
+        5:   76:	printf("Return Value: %d, Expected: %d \n\n", val, 0);
+        -:   77:	
+        5:   78:	printf("\n TESTING FOR 3 SUPPLY COUNT 0:\n\n");
+        -:   79:	
+     5005:   80:	for (i = 0; i < x; i++) {
+     5000:   81:        memcpy(&oG, &G, sizeof(struct gameState));
+     5000:   82:        oG.supplyCount[0]= 0;
+     5000:   83:		oG.supplyCount[1] = 0;
+     5000:   84:		oG.supplyCount[2]= 0;
+     5000:   85:		val = isGameOver(&oG);
+     5000:   86:		if (val == 0) {
+    #####:   87:			passFail = 0;
+    #####:   88:			break;
+        -:   89:		}
+        -:   90:	}
+        5:   91:	printf("Return Value: %d, Expected: %d \n\n", val, 1);
+        -:   92:	
+        -:   93:	
+        5:   94:	assertTrue(passFail, 1);
+        -:   95:	
+        5:   96:	return 0;
+        -:   97:}
+        -:   98:
+File 'cardtest1.c'
+Lines executed:75.81% of 62
+Creating 'cardtest1.c.gcov'
+
+        -:    0:Source:cardtest1.c
+        -:    0:Graph:cardtest1.gcno
+        -:    0:Data:cardtest1.gcda
+        -:    0:Runs:5
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include "dominion_helpers.h"
+        -:    3:#include <string.h>
+        -:    4:#include <stdio.h>
+        -:    5:#include <assert.h>
+        -:    6:#include "rngs.h"
+        -:    7:
+        5:    8:void assertTrue(int a, int b){
+        5:    9:	if(a==b)
+        -:   10:	{
+        5:   11:		printf("TEST PASSED\n");
+        -:   12:	}
+        -:   13:	else{
+    #####:   14:		printf("TEST FAILED\n");
+        -:   15:	}
+        5:   16:}
+        -:   17://Adventurer test
+        5:   18:int main (int argc, char** argv) {
+        -:   19:	struct gameState G, oG;
+        5:   20:    int k[10] = {great_hall, council_room, feast, gardens, mine
+        -:   21:               , remodel, smithy, village, baron, adventurer};
+        5:   22:    int choice1 = 0, choice2 = 0, choice3 = 0, bonus = 0, handPos = 0, seed =2, numbPlayers = 2, x = 1000, i, val, passFail = 1;
+        5:   23:	int plusCards = 1;
+        5:   24:	int player = whoseTurn(&G);
+        -:   25:
+        -:   26:    //initialize game state
+        5:   27:    initializeGame(numbPlayers, k, seed, &G);
+        -:   28:
+        5:   29:    printf("\n *****TESTING Adventurer***** \n");
+        -:   30:	
+        -:   31:	//testing return value for proper usage
+        5:   32:    printf("\n TESTING RETURN VALUE:\n\n");
+     5005:   33:    for (i = 0; i < x; i++) {
+     5000:   34:        memcpy(&oG, &G, sizeof(struct gameState));
+     5000:   35:        val = cardEffect(adventurer, choice1, choice2, choice3, &oG, handPos, &bonus);
+     5000:   36:        if (val != 0) {
+    #####:   37:            passFail = 0;
+    #####:   38:            break;
+        -:   39:        }
+        -:   40:    }
+        5:   41:    printf("Return Value: %d, Expected: %d \n\n", val, 0);
+        -:   42:
+        -:   43:    //testing correct number of cards  and actionsadded
+        5:   44:    printf("\n TESTING CORRECT ACTION AND HAND COUNT\n\n");
+     5005:   45:    for (i = 0; i < x; i++) {
+     5000:   46:		player = whoseTurn(&G);
+     5000:   47:        memcpy(&oG, &G, sizeof(struct gameState));
+     5000:   48:        cardEffect(adventurer, choice1, choice2, choice3, &oG, handPos, &bonus);
+     5000:   49:        if (oG.handCount[player] < G.handCount[player]+plusCards-1){
+    #####:   50:            passFail = 0;
+    #####:   51:            break;
+        -:   52:        }
+     5000:   53:		if(oG.numActions != G.numActions){
+    #####:   54:			passFail = 0;
+    #####:   55:			break;
+        -:   56:		}
+        -:   57:    }
+        5:   58:	printf("Action Count: %d, Expected: %d \n\n", oG.numActions, G.numActions);
+        5:   59:    printf("Hand Count: %d, Expected: > %d \n\n", oG.handCount[player], G.handCount[player]+plusCards-1);
+        -:   60:	
+        -:   61:	//testing treasure
+        -:   62:	int treasure, tC;
+     5005:   63:	for(i = 0; i<x; i++){
+     5000:   64:		memcpy(&oG,&G, sizeof(struct gameState));
+     5000:   65:		cardEffect(adventurer, choice1, choice2, choice3, &oG, handPos, &bonus);
+     5000:   66:		treasure = 0;
+     5000:   67:		int j = 0;
+        -:   68:		
+    35000:   69:		while(j<numHandCards(&G)){
+        -:   70:		//for (j = 0; j<numHandCards(&G; j++)
+    25000:   71:			if(handCard(j, &G) == copper){
+    20000:   72:				treasure ++;
+        -:   73:			}
+     5000:   74:			else if(handCard(j, &G)== silver){
+    #####:   75:				treasure = treasure +2;
+        -:   76:			}
+     5000:   77:			else if(handCard(j, &G) == gold){
+    #####:   78:				treasure = treasure+ 3;
+        -:   79:			}
+    25000:   80:			j++;
+        -:   81:		};
+        -:   82:		
+     5000:   83:		tC = 0;
+     5000:   84:		int k = 0;
+    40000:   85:		for (k = 0; k<numHandCards(&oG); k++){
+    35000:   86:			if (handCard(j, &oG) == copper) {
+    35000:   87:                tC++;
+    #####:   88:            } else if (handCard(j, &oG) == silver) {
+    #####:   89:                tC += 2;
+    #####:   90:            } else if (handCard(j, &oG) == gold) {
+    #####:   91:                tC += 3;
+        -:   92:            }
+        -:   93:		}
+     5000:   94:		if(treasure+2 > tC){
+    #####:   95:			passFail = 0;
+    #####:   96:			break;
+        -:   97:		}
+        -:   98:	}
+        5:   99:	printf("Treasure Count: %d, Expected Treasure Count: >= %d \n\n", tC, treasure+2);
+        -:  100:	
+        -:  101:    //check value of passFail for overall pass or fail
+        5:  102:	assertTrue(passFail, 1);
+        5:  103:	printf("\n\n *****Adventurer TEST COMPLETE*****\n\n");
+        -:  104:
+        5:  105:    return 0;
+        -:  106:};
+File 'cardtest2.c'
+Lines executed:82.93% of 41
+Creating 'cardtest2.c.gcov'
+
+        -:    0:Source:cardtest2.c
+        -:    0:Graph:cardtest2.gcno
+        -:    0:Data:cardtest2.gcda
+        -:    0:Runs:5
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include "dominion_helpers.h"
+        -:    3:#include <string.h>
+        -:    4:#include <stdio.h>
+        -:    5:#include "rngs.h"
+        -:    6://Smithy test
+        -:    7:
+        5:    8:void assertTrue(int a, int b){
+        5:    9:	if(a==b)
+        -:   10:	{
+    #####:   11:		printf("TEST PASSED\n");
+        -:   12:	}
+        -:   13:	else{
+        5:   14:		printf("TEST FAILED\n");
+        -:   15:	}
+        5:   16:}
+        -:   17:
+        5:   18:int main() {
+        -:   19:    struct gameState G, oG;
+        5:   20:    int k[10] = {adventurer, council_room, feast, gardens, mine
+        -:   21:               , remodel, great_hall, village, baron, smithy};
+        5:   22:    int choice1 = 0, choice2 = 0, choice3 = 0, bonus = 0, handPos = 0, seed =2, numbPlayers = 2, x = 1000, i, val, passFail = 1;
+        5:   23:	int plusCards = 3, plusActions;
+        5:   24:	int player = whoseTurn(&G);
+        -:   25:
+        -:   26:    //initialize game state
+        5:   27:    initializeGame(numbPlayers, k, seed, &G);
+        -:   28:
+        5:   29:    printf("\n *****TESTING SMITHY***** \n");
+        -:   30:	
+        5:   31:	printf("\n TESTING USAGE\n\n");
+        -:   32:	//test invalid input
+        5:   33:	int r = newSmithy( 1, &G, 4);
+        5:   34:	if (r == 0){
+    #####:   35:		passFail = 1;
+        -:   36:	}
+        -:   37:
+        -:   38:	//test valid input
+        5:   39:	r = newSmithy( 1, &G, 4);
+        5:   40:	if(r==0){
+    #####:   41:		passFail = 1;
+    #####:   42:		if(passFail == 1){
+    #####:   43:			printf("USAGE TEST PASSED\n\n");
+        -:   44:		}
+        -:   45:	}
+        -:   46:	
+        -:   47:	//testing return value
+        5:   48:    printf("\n TESTING RETURN VALUE:\n\n");
+     5005:   49:    for (i = 0; i < x; i++) {
+     5000:   50:        memcpy(&oG, &G, sizeof(struct gameState));
+     5000:   51:        val = cardEffect(smithy, choice1, choice2, choice3, &oG, handPos, &bonus);
+     5000:   52:        if (val != 0) {
+    #####:   53:            passFail = 0;
+    #####:   54:            break;
+        -:   55:        }
+        -:   56:    }
+        5:   57:    printf("Return Value: %d, Expected: %d \n\n", val, 0);
+        5:   58:	player = whoseTurn(&G);
+        -:   59:    //testing correct number of cards added
+        5:   60:    printf("\n TESTING CORRECT HAND COUNT\n\n");
+        5:   61:    for (i = 0; i < x; i++) {
+        5:   62:        memcpy(&oG, &G, sizeof(struct gameState));
+        5:   63:        cardEffect(smithy, choice1, choice2, choice3, &oG, handPos, &bonus);
+        5:   64:        if (oG.handCount[player] != G.handCount[player]+plusCards-1){
+        5:   65:            passFail = 0;
+        5:   66:            break;
+        -:   67:        }
+        -:   68:    }
+        -:   69:
+        5:   70:    printf("Hand Count: %d, Expected: %d \n\n", oG.handCount[player], G.handCount[player]+plusCards-1);
+        -:   71:    //check value of passFail for overall pass or fail
+        5:   72:	assertTrue(passFail, 1);
+        5:   73:	printf("\n\n *****SMITHY TEST COMPLETE*****\n\n");
+        -:   74:
+        5:   75:    return 0;
+        -:   76:};
+File 'cardtest3.c'
+Lines executed:88.64% of 44
+Creating 'cardtest3.c.gcov'
+
+        -:    0:Source:cardtest3.c
+        -:    0:Graph:cardtest3.gcno
+        -:    0:Data:cardtest3.gcda
+        -:    0:Runs:5
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include "dominion_helpers.h"
+        -:    3:#include <string.h>
+        -:    4:#include <stdio.h>
+        -:    5:#include <assert.h>
+        -:    6:#include "rngs.h"
+        -:    7:
+        5:    8:void assertTrue(int a, int b){
+        5:    9:	if(a==b)
+        -:   10:	{
+    #####:   11:		printf("TEST PASSED\n");
+        -:   12:	}
+        -:   13:	else{
+        5:   14:		printf("TEST FAILED\n");
+        -:   15:	}
+        5:   16:}
+        -:   17://greathall test
+        5:   18:int main (int argc, char** argv) {
+        -:   19:	struct gameState G, oG;
+        5:   20:    int k[10] = {adventurer, council_room, feast, gardens, mine
+        -:   21:               , remodel, smithy, village, baron, great_hall};
+        5:   22:    int choice1 = 0, choice2 = 0, choice3 = 0, bonus = 0, handPos = 0, seed =2, numbPlayers = 2, x = 1000, i, val, passFail = 1;
+        5:   23:	int plusCards = 1, plusActions=1;
+        5:   24:	int player = whoseTurn(&G);
+        -:   25:
+        -:   26:    //initialize game state
+        5:   27:    initializeGame(numbPlayers, k, seed, &G);
+        -:   28:
+        5:   29:    printf("\n *****TESTING Great Hall***** \n");
+        -:   30:	
+        5:   31:	printf("\n TESTING USAGE\n\n");
+        -:   32:	//test invalid input
+        5:   33:	int r = cardEffect(great_hall, choice1, choice2, choice3, &oG, -1, &bonus);
+        5:   34:	if (r == 0){
+        5:   35:		passFail = 1;
+        -:   36:	}
+        -:   37:
+        -:   38:	//test valid input
+        5:   39:	r =cardEffect(great_hall, choice1, choice2, choice3, &oG, handPos, &bonus);
+        5:   40:	if(r==0){
+        5:   41:		passFail = 1;
+        5:   42:		if(passFail == 1){
+        5:   43:			printf("USAGE TEST PASSED\n\n");
+        -:   44:		}
+        -:   45:	}
+        -:   46:	
+        -:   47:	//testing return value
+        5:   48:    printf("\n TESTING RETURN VALUE:\n\n");
+     5005:   49:    for (i = 0; i < x; i++) {
+     5000:   50:        memcpy(&oG, &G, sizeof(struct gameState));
+     5000:   51:        val = cardEffect(great_hall, choice1, choice2, choice3, &oG, handPos, &bonus);
+     5000:   52:        if (val != 0) {
+    #####:   53:            passFail = 0;
+    #####:   54:            break;
+        -:   55:        }
+        -:   56:    }
+        5:   57:    printf("Return Value: %d, Expected: %d \n\n", val, 0);
+        -:   58:
+        -:   59:    //testing correct number of cards  and actionsadded
+        5:   60:    printf("\n TESTING CORRECT ACTION AND HAND COUNT\n\n");
+        5:   61:    for (i = 0; i < x; i++) {
+        5:   62:        memcpy(&oG, &G, sizeof(struct gameState));
+        5:   63:        cardEffect(great_hall, choice1, choice2, choice3, &oG, handPos, &bonus);
+        5:   64:        if (oG.handCount[player] != G.handCount[player]+plusCards-1){
+    #####:   65:            passFail = 0;
+    #####:   66:            break;
+        -:   67:        }
+        5:   68:		if(oG.numActions != G.numActions){
+        5:   69:			passFail = 0;
+        5:   70:			break;
+        -:   71:		}
+        -:   72:    }
+        5:   73:	printf("Action Count: %d, Expected: %d \n\n", oG.numActions, G.numActions+1);
+        5:   74:    printf("Hand Count: %d, Expected: %d \n\n", oG.handCount[player], G.handCount[player]+plusCards-1);
+        -:   75:    //check value of passFail for overall pass or fail
+        5:   76:	assertTrue(passFail, 1);
+        5:   77:	printf("\n\n *****Great Hall TEST COMPLETE*****\n\n");
+        -:   78:
+        5:   79:    return 0;
+        -:   80:};
+File 'cardtest4.c'
+Lines executed:86.27% of 51
+Creating 'cardtest4.c.gcov'
+
+        -:    0:Source:cardtest4.c
+        -:    0:Graph:cardtest4.gcno
+        -:    0:Data:cardtest4.gcda
+        -:    0:Runs:5
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include "dominion_helpers.h"
+        -:    3:#include <string.h>
+        -:    4:#include <stdio.h>
+        -:    5:#include "rngs.h"
+        -:    6://Steward test
+        -:    7:
+        5:    8:void assertTrue(int a, int b){
+        5:    9:	if(a==b)
+        -:   10:	{
+    #####:   11:		printf("TEST PASSED\n");
+        -:   12:	}
+        -:   13:	else{
+        5:   14:		printf("TEST FAILED\n");
+        -:   15:	}
+        5:   16:}
+        -:   17:
+        5:   18:int main() {
+        -:   19:    struct gameState G, oG;
+        5:   20:    int k[10] = {adventurer, council_room, feast, gardens, mine
+        -:   21:               , smithy, great_hall, village, baron, steward};
+        5:   22:    int choice1 = 1, choice2 = 2, choice3 = 3, bonus = 0, handPos = 0, seed =2, numbPlayers = 2, x = 1000, i, val, passFail = 1;
+        5:   23:	int plusCards = 2, plusActions;
+        5:   24:	int player = whoseTurn(&G);
+        -:   25:
+        -:   26:    //initialize game state
+        5:   27:    initializeGame(numbPlayers, k, seed, &G);
+        -:   28:
+        5:   29:    printf("\n *****TESTING Steward***** \n");
+        5:   30:	memcpy(&oG, &G, sizeof(struct gameState));
+        -:   31:	//testing return value
+        5:   32:    printf("\n TESTING RETURN VALUE:\n\n");
+     5005:   33:    for (i = 0; i < x; i++) {
+     5000:   34:        memcpy(&oG, &G, sizeof(struct gameState));
+     5000:   35:        val = cardEffect(steward, choice1, choice2, choice3, &oG, handPos, &bonus);
+     5000:   36:        if (val != 0) {
+    #####:   37:            passFail = 0;
+    #####:   38:            break;
+        -:   39:        }
+        -:   40:    }
+        5:   41:    printf("Return Value: %d, Expected: %d \n\n", val, 0);
+        -:   42:	
+        -:   43:    //testing correct number of cards added
+        5:   44:    printf("\n TESTING CORRECT HAND COUNT AFTER DRAW 2 CARDS\n\n");
+        -:   45:    int newCount;
+     5005:   46:	for (i = 0; i < x; i++) {
+     5000:   47:        memcpy(&oG, &G, sizeof(struct gameState));
+     5000:   48:        cardEffect(steward, choice1, choice2, choice3, &oG, handPos, &bonus);
+     5000:   49:        if (oG.handCount[player] != G.handCount[player]+1){
+    #####:   50:            passFail = 0;
+    #####:   51:            break;
+        -:   52:        }
+        -:   53:    }
+        -:   54:	
+        5:   55:	printf("Hand Count: %d, Expected: %d \n\n", oG.handCount[player]-1, G.handCount[player]);
+        5:   56:	printf("\n TESTING CORRECT MONEY COUNT \n\n");
+        5:   57:	player = whoseTurn(&G);
+        -:   58:	
+        5:   59:	oG.coins = G.coins; 
+        -:   60:	
+        5:   61:	choice1 = 1;
+     5005:   62:	for (i = 0; i < x; i++) {
+     5000:   63:        memcpy(&oG, &G, sizeof(struct gameState));
+        -:   64:		//printf("Money Count: %d, Expected <: %d \n\n", oG.coins, G.coins);
+     5000:   65:        cardEffect(steward, choice1, choice2, choice3, &oG, handPos, &bonus);
+        -:   66:		//printf("Money Count: %d, Expected <: %d \n\n", oG.coins, G.coins);
+        -:   67:		
+     5000:   68:        if (oG.coins > G.coins +2){
+    #####:   69:            passFail = 0;
+    #####:   70:            break;
+        -:   71:        }
+        -:   72:    }
+        -:   73:	
+        5:   74:	printf("Money Count: %d, Expected: %d \n\n", oG.coins, G.coins+2);
+        -:   75:	
+        5:   76:	printf("\n TESTING DISCARD \n\n");
+        -:   77:	
+        5:   78:	for (i = 0; i < x; i++) {
+        5:   79:        memcpy(&oG, &G, sizeof(struct gameState));
+        5:   80:        cardEffect(steward, 2, choice2, choice3, &oG, handPos, &bonus);
+        5:   81:        if (oG.handCount[player] != G.handCount[player]-2){
+        5:   82:            passFail = 0;
+        5:   83:            break;
+        -:   84:        }
+        -:   85:    }
+        5:   86:	printf("Hand Count: %d, Expected: %d \n\n", oG.handCount[player], G.handCount[player]-3);
+        -:   87:    //check value of passFail for overall pass or fail
+        5:   88:	assertTrue(passFail, 1);
+        5:   89:	printf("\n\n *****STEWARD TEST COMPLETE*****\n\n");
+        -:   90:
+        5:   91:    return 0;
+        -:   92:};
+File 'dominion.c'
+No executable lines
+Removing 'dominion.c.gcov'
+

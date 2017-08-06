@@ -1,0 +1,14 @@
+Cardtest2.c and randomtestcard1 both uncovered a bug with smithy, causing the player to be dealt an extra card. 
+Bug is present in dominion.c in the newSmithy function.  The for loop allows for an extra iteration of drawCard 
+due to the loop statement being <=3 rather than <3.  It was discovered by comparing a copy of the game state to 
+the original where the copy has been manually updated to reflect “correct numbers” Below is test output
+
+
+randomTestAdventurer uncovered a bug in the playAdventurer function of dominion.c.  The test was sometimes failing 
+due to the incorrect treasure count test I initially wrote.  In digging deeper it was found that because of the 
+line (state->deckCount[currentPlayer] <0) that despite randomly testing for an empty deck, it still never saw the deck as empty.  
+In this situation you would need a deck of negative amount of cards. As a result, the deck is not being reshuffled when it should 
+and thus is returning bogus treasure draw compared to the manually adjusted gamestate copy.  Cardtest1 did not catch this because 
+it did not included the randomness of an empty deck. 
+
+*See assignment5.pdf for code snippets and console output examples
